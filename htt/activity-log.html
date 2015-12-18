@@ -1,0 +1,13 @@
+<div class="panel-heading">
+    <b>{{ vm.uiGridItems.environment }} : {{ vm.uiGridItems.host }} -> {{ vm.uiGridItems.action }}</b>
+    <div class="pull-right" title="close popup window">
+        <button id="bActLogData" type="button" class="btn btn-default" ng-click="$close()">Close</button>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="row">
+    <div class="table-responsive">
+        <div ui-grid="vm.uiGridItems" class="ui-grid" ui-grid-auto-resize></div>
+    </div>
+    </div>
+</div>

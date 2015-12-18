@@ -1,0 +1,16 @@
+{"dashboard": [
+    {
+        "eventTime": "2015-12-05 13:20:30",
+        "host": "host1",
+        "environment": "UAT2",
+        "submittedData": ["task1", "task2", "task3"],
+        "action": "Run tasks"
+    },
+    {
+        "eventTime": "2015-12-05 20:30:00",
+        "host": "host2",
+        "environment": "UAT1",
+        "submittedData": ["task4", "task5", "task6"],
+        "action": "Run tasks"
+    }
+]}
