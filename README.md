@@ -16,9 +16,9 @@ How to start:
 
 >npm install typescript -g
 
->git clone <URL> <your-project-name>
+>git clone [URL] [your-project-name]
 
->cd <your-project-name>
+>cd [your-project-name]
 
 >hs #Start web-server
 
@@ -35,4 +35,4 @@ E2E Testing
 
 >cd ./tests
 
->protractor e2e.jse --suite <name>
+>protractor e2e.jse --suite [name]
