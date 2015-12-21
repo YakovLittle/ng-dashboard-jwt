@@ -59,7 +59,8 @@ module App.Services {
                 },
                 'actions-log': {
                     'url': '/dashboard',
-                    'file': 'http://localhost:8080/api/_dashboard.json'
+                    'file': '/api/_dashboard.json',
+                    'wrapper': 'dashboard'
                 }
             }
         }
@@ -76,6 +77,9 @@ module App.Services {
                 if (this.apiDBG) {
                    field = 'file';
                 }
+                if ((args === '') && ('args' in this.API[api])) {
+                    args = this.API[api]['args'];
+                }
                 return (this.apiDBG ? '' : this.host) + this.API[api][field] + '?cache=' + (Math.random()*1000000) + args;
             }
             console.log("UNKNOWN API: " + api);
@@ -85,13 +89,25 @@ module App.Services {
         //HTTP GET Request
         doGET(api: string, args = '', options = {}): ng.IPromise<any> {
             return this.$http.get(this.getAPIurl(api, args), options)
-                   .then((response) => response.data);
+                   .then((response) => {
+                        if ('wrapper' in this.API[api]) {
+                            return response.data[this.API[api]['wrapper']];
+                        } else {
+                           return response.data;
+                        }
+                    });
         }
 
         //HTTP POST Request
         doPOST(api: string, data: string, args = '', options = {}): ng.IPromise<any> {
             return this.$http.post(this.getAPIurl(api, args), data, options)
-                       .then((response) => response.data);
+                    .then((response) => {
+                        if ('wrapper' in this.API[api]) {
+                            return response.data[this.API[api]['wrapper']];
+                        } else {
+                           return response.data;
+                        }
+                    });
         }
     }
 }

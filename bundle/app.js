@@ -49,7 +49,8 @@ var App;
                     },
                     'actions-log': {
                         'url': '/dashboard',
-                        'file': 'http://localhost:8080/api/_dashboard.json'
+                        'file': '/api/_dashboard.json',
+                        'wrapper': 'dashboard'
                     }
                 };
             }
@@ -63,22 +64,41 @@ var App;
                     if (this.apiDBG) {
                         field = 'file';
                     }
+                    if ((args === '') && ('args' in this.API[api])) {
+                        args = this.API[api]['args'];
+                    }
                     return (this.apiDBG ? '' : this.host) + this.API[api][field] + '?cache=' + (Math.random() * 1000000) + args;
                 }
                 console.log("UNKNOWN API: " + api);
                 return api;
             };
             BackendAPI.prototype.doGET = function (api, args, options) {
+                var _this = this;
                 if (args === void 0) { args = ''; }
                 if (options === void 0) { options = {}; }
                 return this.$http.get(this.getAPIurl(api, args), options)
-                    .then(function (response) { return response.data; });
+                    .then(function (response) {
+                    if ('wrapper' in _this.API[api]) {
+                        return response.data[_this.API[api]['wrapper']];
+                    }
+                    else {
+                        return response.data;
+                    }
+                });
             };
             BackendAPI.prototype.doPOST = function (api, data, args, options) {
+                var _this = this;
                 if (args === void 0) { args = ''; }
                 if (options === void 0) { options = {}; }
                 return this.$http.post(this.getAPIurl(api, args), data, options)
-                    .then(function (response) { return response.data; });
+                    .then(function (response) {
+                    if ('wrapper' in _this.API[api]) {
+                        return response.data[_this.API[api]['wrapper']];
+                    }
+                    else {
+                        return response.data;
+                    }
+                });
             };
             BackendAPI.$inject = ['$http'];
             return BackendAPI;
@@ -273,7 +293,7 @@ var App;
                 this.uiGrid = new App.Models.GridActLog();
                 this.BackendAPI.doGET('actions-log')
                     .then(function (data) {
-                    _this.uiGrid.data = data['dashboard'];
+                    _this.uiGrid.data = data;
                     _this.lastUpd = new Date();
                 });
             };

@@ -24,7 +24,7 @@ module App.Controllers {
             this.uiGrid = new Models.GridActLog();
             this.BackendAPI.doGET('actions-log')
                 .then((data) => {
-                    this.uiGrid.data = data['dashboard'];
+                    this.uiGrid.data = data;
                     this.lastUpd = new Date();
                 });
         }
