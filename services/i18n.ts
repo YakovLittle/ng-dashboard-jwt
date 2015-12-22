@@ -9,6 +9,9 @@ module App.Locale {
     	invalidCredentials: "Invalid credentials",
     	unavailableServer: "Data-Load Server is unavailable",
     	environment: "Environment",
-    	dashboard: "Dashboard"
+    	dashboard: "Dashboard",
+    	viewData: "View Data",
+    	submData:"Submitted Data",
+        logout: "See you!"
     };
 }

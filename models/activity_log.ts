@@ -4,22 +4,6 @@ module App.Models {
     'use strict';
 
     /**
-     * Activity Log Item
-     */
-    export class ActLogItem {
-        //JSON fields
-        public eventTime: string;
-        public host: string;
-        public environment: string;
-        public action: string;
-        public submittedData: Array<any>;
-
-        constructor(){
-            //
-        }
-    }
-
-    /**
      * UI-Grid Activity Log
      */
     export class GridActLog {
@@ -32,7 +16,7 @@ module App.Models {
         showGridFooter: boolean = true;
         exporterCsvFilename: string;
         columnDefs: Object;
-        data: Array<any>;
+        data: Array<IActionLog>;
         appScopeProvider: Object;
 
         //UI-Grid options
@@ -52,8 +36,8 @@ module App.Models {
                 {
                     field: 'submittedData',
                     enableColumnMenu: false,
-                    displayName: 'Submitted Data',
-                    cellTemplate: '<div class="ui-grid-cell-contents"><a href ng-click="grid.appScope.onClick(row)">View Data</a></div>'
+                    displayName: angular.element('#bActionLog').injector().get('$filter')('i18n')('submData'),
+                    cellTemplate: '<div class="ui-grid-cell-contents"><a href ng-click="grid.appScope.onClick(row)">{{ "viewData" | i18n }}</a></div>'
                 }
             ];
         }
@@ -68,20 +52,21 @@ module App.Models {
         enableSorting: boolean = true;
         enableFiltering: boolean = true;
         showGridFooter: boolean = true;
-        columnDefs: Object;
-        data: Array<any>;
+        columnDefs: Array<Object>;
+        data: Array<Object>;
         host: string;
         environment: string;
         action: string;
 
         //UI-Grid options
-        constructor(row: Object){
+        constructor(row: IActionLog){
             this.host = row['host'];
             this.environment = row['environment'];
             this.action = row['action'];
-            this.columnDefs = [
-                { field: 'submittedData', enableColumnMenu: false, displayName: 'Submitted Data' }
-            ];
+            this.columnDefs = [{
+                field: 'submittedData', enableColumnMenu: false, 
+                displayName:  angular.element('#bActionLog').injector().get('$filter')('i18n')('submData')
+            }];
             this.data = [];
             for (var i in row['submittedData']){
                 var item = {

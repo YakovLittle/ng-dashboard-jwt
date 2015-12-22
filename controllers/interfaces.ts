@@ -26,4 +26,12 @@ module App {
         rootAuth: string;
         modalInstance: ng.ui.bootstrap.IModalServiceInstance;
     }
+
+    export interface IActionLog {//JSON fields
+        eventTime: string;
+        host: string;
+        environment: string;
+        action: string;
+        submittedData: Array<any>;
+    }
 }

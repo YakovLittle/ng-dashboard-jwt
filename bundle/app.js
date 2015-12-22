@@ -117,7 +117,10 @@ var App;
             invalidCredentials: "Invalid credentials",
             unavailableServer: "Data-Load Server is unavailable",
             environment: "Environment",
-            dashboard: "Dashboard"
+            dashboard: "Dashboard",
+            viewData: "View Data",
+            submData: "Submitted Data",
+            logout: "See you!"
         };
     })(Locale = App.Locale || (App.Locale = {}));
 })(App || (App = {}));
@@ -342,12 +345,6 @@ var App;
     var Models;
     (function (Models) {
         'use strict';
-        var ActLogItem = (function () {
-            function ActLogItem() {
-            }
-            return ActLogItem;
-        })();
-        Models.ActLogItem = ActLogItem;
         var GridActLog = (function () {
             function GridActLog() {
                 this.enableGridMenu = true;
@@ -372,8 +369,8 @@ var App;
                     {
                         field: 'submittedData',
                         enableColumnMenu: false,
-                        displayName: 'Submitted Data',
-                        cellTemplate: '<div class="ui-grid-cell-contents"><a href ng-click="grid.appScope.onClick(row)">View Data</a></div>'
+                        displayName: angular.element('#bActionLog').injector().get('$filter')('i18n')('submData'),
+                        cellTemplate: '<div class="ui-grid-cell-contents"><a href ng-click="grid.appScope.onClick(row)">{{ "viewData" | i18n }}</a></div>'
                     }
                 ];
             }
@@ -390,9 +387,10 @@ var App;
                 this.host = row['host'];
                 this.environment = row['environment'];
                 this.action = row['action'];
-                this.columnDefs = [
-                    { field: 'submittedData', enableColumnMenu: false, displayName: 'Submitted Data' }
-                ];
+                this.columnDefs = [{
+                        field: 'submittedData', enableColumnMenu: false,
+                        displayName: angular.element('#bActionLog').injector().get('$filter')('i18n')('submData')
+                    }];
                 this.data = [];
                 for (var i in row['submittedData']) {
                     var item = {
@@ -453,8 +451,9 @@ var App;
         return {
             request: function (config) {
                 config.header = config.headers || {};
-                if (sessionService.get('user').token) {
-                    config.headers.Authorization = 'Bearer ' + sessionService.get('user').token;
+                var token = sessionService.get('user').token;
+                if (token) {
+                    config.headers.Authorization = 'Bearer ' + token;
                 }
                 return config;
             },

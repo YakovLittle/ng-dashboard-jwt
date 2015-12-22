@@ -57,9 +57,9 @@ module App {
 			return {
 				request: function(config) {
 					config.header = config.headers || {};
-					//Add Authorization Header
-					if (sessionService.get('user').token) {
-						config.headers.Authorization = 'Bearer ' + sessionService.get('user').token;
+					var token = sessionService.get('user').token;
+					if (token) {
+						config.headers.Authorization = 'Bearer ' + token;//Add Authorization Header
 					}
 					return config;
 				},

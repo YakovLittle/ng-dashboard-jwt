@@ -30,7 +30,7 @@ module App.Controllers {
         }
 
         //Open Submitted Data
-        openSubmData(row: Models.ActLogItem) {
+        openSubmData(row: IActionLog) {
             this.uiGridItems = new Models.GridActLogSubmData(row);
             //Set modal popup
             var options: ng.ui.bootstrap.IModalSettings = {
