@@ -27,7 +27,7 @@ module App {
 					$rootScope.rootEnv = '#';
 					authService.removeUserData();//Remove User data
 					e.preventDefault();
-					BackendAPI.go2Page('login', referer);//Set referer
+					BackendAPI.go2Page('login', referer);//Set Referer
 				};
 				//Checking JWT
 				$rootScope.rootAuth = (authService.getUserData().token) || 0;//For disable Auth -> 1
@@ -38,7 +38,7 @@ module App {
 				  	case 'login':
 				    	if ($rootScope.rootAuth) {
 				    		e.preventDefault();
-				    		BackendAPI.go2Page(BackendAPI.getRefState(), '');//Redirect to referer
+				    		BackendAPI.go2Page(BackendAPI.getRefState(), '');//Redirect to Referer
 						}
 				    	break;
 				   	default:
