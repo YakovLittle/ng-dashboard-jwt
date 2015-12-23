@@ -26,6 +26,9 @@ module App.Controllers {
                 .then((data) => {
                     this.uiGrid.data = data;
                     this.lastUpd = new Date();
+                })
+                .catch((reason) => {//invalid JWT
+                    this.BackendAPI.go2Page('logout', 'home');
                 });
         }
 

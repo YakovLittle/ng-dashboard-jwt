@@ -30,10 +30,8 @@ module App.Controllers {
             this.BackendAPI.doPOST('jwt-auth', '{"userName":"' + this.email + '", "password":"' + this.pw + '"}')
             .then((data) => {//Authorization
                 if (this.authService.setUserData(data)) {
-                    //Get Environments List
-                    this.$rootScope.rootEnvs = this.authService.getUserData().environments;
-                    this.authService.go2Page();
-                    this.authService.setRefState('');
+                    this.$rootScope.rootEnvs = this.authService.getUserData().environments;//Get Environments List
+                    this.BackendAPI.go2Page(this.BackendAPI.getRefState(), '');//Go to referer State
                 } else {
                     this.msg = this.$filter('i18n')('invalidCredentials');
                 }

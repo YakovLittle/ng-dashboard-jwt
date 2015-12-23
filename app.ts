@@ -18,35 +18,32 @@ module App {
 		}])
 
 		//RUN
-		.run(function($rootScope, $location, $state, authService) {
+		.run(function($rootScope, $location, $state, authService, BackendAPI) {
 			//onChange Page-Event
 			$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-				var nologged = function() {
+				var nologged = function(referer) {
 					console.log('Not logged');
+					$rootScope.rootAuth = 0;
+					$rootScope.rootEnv = '#';
+					authService.removeUserData();//Remove User data
 					e.preventDefault();
-					authService.go2Page('login');
+					BackendAPI.go2Page('login', referer);//Set referer
 				};
-				$rootScope.rootAuth = (authService.getUserData().token) || '';//For disable Auth -> set '1'
-				//Checking State-Page
+				//Checking JWT
+				$rootScope.rootAuth = (authService.getUserData().token) || 0;//For disable Auth -> 1
 				switch (toState.name) {
 					case 'logout':
-						if ($rootScope.rootAuth) {//Remove User data
-							authService.removeUserData();
-							$rootScope.rootAuth = false;
-						} else {
-							nologged();
-						}
+						nologged(BackendAPI.getRefState());
 						break;
 				  	case 'login':
 				    	if ($rootScope.rootAuth) {
 				    		e.preventDefault();
-				    		authService.go2Page();//Redirect
+				    		BackendAPI.go2Page(BackendAPI.getRefState(), '');//Redirect to referer
 						}
 				    	break;
 				   	default:
-						if (!$rootScope.rootAuth) {//Set referer for Redirect after Login
-							authService.setRefState(toState.name);
-							nologged();
+						if (!$rootScope.rootAuth) {
+							nologged(toState.name);
 						}
 				}
 			});
@@ -59,12 +56,12 @@ module App {
 					config.header = config.headers || {};
 					var token = sessionService.get('user').token;
 					if (token) {
-						config.headers.Authorization = 'Bearer ' + token;//Add Authorization Header
+						config.headers.Authorization = token;//Add Authorization Header
 					}
 					return config;
 				},
 				responseError: function(response) {
-					console.log(response);
+					console.log(response);			
 					return $q.reject(response);
 				}
 			};

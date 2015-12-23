@@ -21,8 +21,7 @@ module App.Services {
                     controller: Controllers.LoginCtrl
                 })
                 .state('logout', {
-                    url: '/logout',
-                    templateUrl: '/htt/logout.html'
+                    url: '/logout'
                 })
                 .state('stat', {
                     url: '/stat',
@@ -41,14 +40,13 @@ module App.Services {
      * Backend API
      */
     export class BackendAPI {
-        static $inject = ['$http'];
+        static $inject = ['$http', '$state', 'sessionService', '$rootScope'];
         //
         private host: string;
         private API: Object;
-        private userAgent: Object;
         private apiDBG: number;
 
-        constructor(private $http: ng.IHttpService) {
+        constructor(private $http: ng.IHttpService, private $state: ng.ui.IStateService, private sessionService, private $rootScope: ISPAScope) {
             this.apiDBG = 1; //NOTE: if apiDBG = 1 then uses 'file' properties for API
             this.host = 'http://localhost:8080';//Backend
             //API
@@ -58,11 +56,22 @@ module App.Services {
                     'file': 'http://localhost/auth.php'
                 },
                 'actions-log': {
-                    'url': '/dashboard',
+                    'url': '/dataload/dashboard',
                     'file': '/api/_dashboard.json',
                     'wrapper': 'dashboard'
                 }
             }
+        }
+
+        //Get Referer State-Page 
+        getRefState(): string {
+            return (this.sessionService.get('referer-state').name) || 'home';
+        }
+
+        //Go to State
+        go2Page(page, referer = '') {
+            this.sessionService.set('referer-state', { 'name': referer });
+            this.$state.go(page, {}, { reload: true });
         }
 
         //Switch Debug Mode
@@ -77,10 +86,10 @@ module App.Services {
                 if (this.apiDBG) {
                    field = 'file';
                 }
-                if ((args === '') && ('args' in this.API[api])) {
-                    args = this.API[api]['args'];
+                if ('args' in this.API[api]) {
+                    args = args + this.API[api]['args'];
                 }
-                return (this.apiDBG ? '' : this.host) + this.API[api][field] + '?cache=' + (Math.random()*1000000) + args;
+                return (this.apiDBG ? '' : this.host) + this.API[api][field] + '?' + (this.$rootScope.rootEnv === '#' ? '' : 'env=' + angular.lowercase(this.$rootScope.rootEnv) + '&') + 'cache=' + (Math.random()*1000000) + args;
             }
             console.log("UNKNOWN API: " + api);
             return api;
@@ -89,25 +98,25 @@ module App.Services {
         //HTTP GET Request
         doGET(api: string, args = '', options = {}): ng.IPromise<any> {
             return this.$http.get(this.getAPIurl(api, args), options)
-                   .then((response) => {
-                        if ('wrapper' in this.API[api]) {
-                            return response.data[this.API[api]['wrapper']];
-                        } else {
-                           return response.data;
-                        }
-                    });
+                .then((response) => {
+                    if ('wrapper' in this.API[api]) {
+                        return response.data[this.API[api]['wrapper']];
+                    } else {
+                       return response.data;
+                    }
+                });
         }
 
         //HTTP POST Request
         doPOST(api: string, data: string, args = '', options = {}): ng.IPromise<any> {
             return this.$http.post(this.getAPIurl(api, args), data, options)
                     .then((response) => {
-                        if ('wrapper' in this.API[api]) {
-                            return response.data[this.API[api]['wrapper']];
-                        } else {
-                           return response.data;
-                        }
-                    });
+                    if ('wrapper' in this.API[api]) {
+                        return response.data[this.API[api]['wrapper']];
+                    } else {
+                       return response.data;
+                    }
+                });
         }
     }
 }

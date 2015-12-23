@@ -13,7 +13,9 @@
 /// <reference path='controllers/login.ts' />
 /// <reference path='controllers/home.ts' />
 /// <reference path='controllers/navigation.ts' />
+/// <reference path='controllers/cres.ts' />
 
 /// <reference path='models/activity_log.ts' />
+/// <reference path='models/cres_mon.ts' />
 
 /// <reference path='app.ts' />

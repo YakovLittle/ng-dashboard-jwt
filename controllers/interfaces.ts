@@ -13,7 +13,7 @@ module App {
         removeItem(key: string): void;
     }
 
-    export interface IUserData {
+    export interface IUserData {//Session Storage
         token: string;
         environments: Array<string>;
     }
@@ -23,7 +23,8 @@ module App {
         modal: Object;
 
         rootEnvs: Array<string>;
-        rootAuth: string;
+        rootEnv: string;
+        rootAuth: number;
         modalInstance: ng.ui.bootstrap.IModalServiceInstance;
     }
 

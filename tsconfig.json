@@ -20,6 +20,8 @@
         "controllers/navigation.ts",
         "controllers/home.ts",
         "models/activity_log.ts",
-        "controllers/modal.ts"
+        "controllers/modal.ts",
+        "controllers/cres.ts",
+        "models/cres_mon.ts"
     ]
 }

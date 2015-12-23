@@ -4,19 +4,18 @@ module App.Controllers {
     'use strict';
 
     export class NavCtrl {
-        static $inject = ['$scope', 'authService', 'BackendAPI'];
-        private curEnv: string;
+        static $inject = ['$scope', '$rootScope'];
 
         //Initialization
-        constructor(private $scope: ISPAScope, private authService: Services.Authentication, private BackendAPI: Services.BackendAPI) {
+        constructor(private $scope: ISPAScope, private $rootScope: ISPAScope) {
             $scope.vm = this;
             //
-            this.curEnv = '#';
+            this.$rootScope.rootEnv = '#';
         }
          
         //
         chooseEnv(value: string){
-            this.curEnv = angular.uppercase(value);
+            this.$rootScope.rootEnv = angular.uppercase(value);
         }
     }
 }

@@ -11,7 +11,6 @@ module App.Locale {
     	environment: "Environment",
     	dashboard: "Dashboard",
     	viewData: "View Data",
-    	submData:"Submitted Data",
-        logout: "See you!"
+    	submData:"Submitted Data"
     };
 }

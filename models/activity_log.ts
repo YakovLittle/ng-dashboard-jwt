@@ -15,7 +15,7 @@ module App.Models {
         enableFiltering: boolean = true;
         showGridFooter: boolean = true;
         exporterCsvFilename: string;
-        columnDefs: Object;
+        columnDefs: Array<Object>;
         data: Array<IActionLog>;
         appScopeProvider: Object;
 
@@ -24,7 +24,7 @@ module App.Models {
             this.exporterCsvFilename = 'activity_log.csv';
             this.appScopeProvider = {
                 onClick: function(row) {
-                    angular.element("#bActionLog").controller().openSubmData(row.entity);
+                    angular.element('#bActionLog').controller().openSubmData(row.entity);
                 }
             };
             this.data = [];
@@ -33,9 +33,7 @@ module App.Models {
                 { field: 'host', enableColumnMenu: false, displayName: 'Host' },
                 { field: 'environment', enableColumnMenu: false, displayName: 'Environment' },
                 { field: 'action',  enableColumnMenu: false, displayName: 'Action'},
-                {
-                    field: 'submittedData',
-                    enableColumnMenu: false,
+                { field: 'submittedData', enableColumnMenu: false,
                     displayName: angular.element('#bActionLog').injector().get('$filter')('i18n')('submData'),
                     cellTemplate: '<div class="ui-grid-cell-contents"><a href ng-click="grid.appScope.onClick(row)">{{ "viewData" | i18n }}</a></div>'
                 }
@@ -60,19 +58,18 @@ module App.Models {
 
         //UI-Grid options
         constructor(row: IActionLog){
-            this.host = row['host'];
-            this.environment = row['environment'];
-            this.action = row['action'];
+            this.host = row.host;
+            this.environment = row.environment;
+            this.action = row.action;
             this.columnDefs = [{
                 field: 'submittedData', enableColumnMenu: false, 
                 displayName:  angular.element('#bActionLog').injector().get('$filter')('i18n')('submData')
             }];
             this.data = [];
-            for (var i in row['submittedData']){
-                var item = {
-                    submittedData: row['submittedData'][i]
-                };
-                this.data.push(item);
+            for (var i in row.submittedData){
+                this.data.push({
+                    submittedData: row.submittedData[i]
+                });
             }
         }
     }

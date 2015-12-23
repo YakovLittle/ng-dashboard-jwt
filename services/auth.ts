@@ -33,10 +33,10 @@ module App.Services {
      * Authentication service
      */
     export class Authentication {
-        static $inject = ['sessionService', '$state'];
+        static $inject = ['sessionService'];
 
         //Initialization
-        constructor(private sessionService, private $state: ng.ui.IStateService) {
+        constructor(private sessionService) {
             //
         }
 
@@ -58,31 +58,7 @@ module App.Services {
                 this.sessionService.set('user', data);
                 return true;
             }
-            console.log(data);
             return false;
-        }
-
-        //Get Referer State-Page 
-        getRefState(): string {
-            return this.sessionService.get('referer-state').name;
-        }
-
-        //Set Referer State-Page
-        setRefState(page) {
-            if (page === '') {
-                this.sessionService.remove('referer-state');
-                return;
-            }
-            var state = { 'name': page };
-            this.sessionService.set('referer-state', state);
-        }
-
-        //Open another state
-        go2Page(page: string = '') {
-            if (page === '') {
-                page = (this.getRefState()) || 'home';//by default
-            }
-            this.$state.go(page, {}, { reload: true });
         }
     }
 }
