@@ -150,6 +150,40 @@ var App;
             };
         }
         Filters.getStr4Locale = getStr4Locale;
+        function getCSVArray() {
+            return function (content, separator, fhead) {
+                if (separator === void 0) { separator = ','; }
+                var rows = content.split(/[\r\n]+/g);
+                var CSV = [];
+                var headers = [];
+                headers = rows[0].split(separator);
+                var columnCnt = headers.length;
+                for (var i = 1; i < rows.length; i++) {
+                    var obj = {};
+                    var row = rows[i].split(separator);
+                    if (row.length === columnCnt) {
+                        for (var j = 0; j < headers.length; j++) {
+                            var col = headers[j].replace(/^\"+|\"+$/g, '');
+                            if (fhead instanceof Object) {
+                                if (!(col in fhead)) {
+                                    continue;
+                                }
+                            }
+                            obj[col] = row[j].replace(/^\"+|\"+$/g, '');
+                        }
+                        CSV.push(obj);
+                    }
+                    else {
+                        if ((i !== (rows.length - 1)) && (row !== '')) {
+                            console.log('Parse error: ' + row);
+                            continue;
+                        }
+                    }
+                }
+                return CSV;
+            };
+        }
+        Filters.getCSVArray = getCSVArray;
     })(Filters = App.Filters || (App.Filters = {}));
 })(App || (App = {}));
 var App;
@@ -447,6 +481,7 @@ var App;
         };
     })
         .filter('i18n', App.Filters.getStr4Locale)
+        .filter('csvreader', App.Filters.getCSVArray)
         .service('sessionService', App.Services.SessionService)
         .service('BackendAPI', App.Services.BackendAPI)
         .service('authService', App.Services.Authentication)

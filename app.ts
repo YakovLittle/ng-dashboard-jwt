@@ -70,6 +70,9 @@ module App {
 		//Localization Filter
 		.filter('i18n', Filters.getStr4Locale)
 
+		//CSV Filter for FileReader
+		.filter('csvreader', Filters.getCSVArray)
+
 		//Session Service
 		.service('sessionService', Services.SessionService)
 
