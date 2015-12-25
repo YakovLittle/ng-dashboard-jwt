@@ -5,10 +5,10 @@ Dashboards and JWT Authentication with AngularJS + Typescript
 Requirements: AngularJS 1.2+
 
 Libraries:
-jQuery
-AngularUI Router
-UI Bootstrap
-Angular UI Grid
+jQuery,
+AngularUI Router,
+UI Bootstrap,
+Angular UI Grid,
 Angular-loading-bar
 
 How to start:
