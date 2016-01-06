@@ -1,5 +1,6 @@
 // spec.js
 describe('Login page', function() {
+	var mockModule = require('../mocked-backend');
 	var emailT = element(by.model('vm.email'));
   	var pwT = element(by.model('vm.pw'));
   	var loginB = element(by.id('bALogin'));
@@ -22,7 +23,17 @@ describe('Login page', function() {
 
 	beforeEach(function() {
 		browser.get('#/login');
+		browser.addMockModule('httpBackendMock', mockModule.httpBackendMock);
 		//checkAlert();
+		browser.executeScript("window.performance.mark('start');");
+	});
+
+	afterEach(function() {
+		browser.executeScript("window.performance.mark('end'); window.performance.measure('test', 'start', 'end');");
+		browser.executeScript("return window.performance.getEntriesByType('measure');")
+		.then(function(res) {
+			console.log(res);
+		});
 	});
 
 	it('should show Validation error', function() {
@@ -71,7 +82,8 @@ describe('Login page', function() {
 
 		browser.executeScript(getLocaleMsg('dashboard'))
 		.then(function(res) {//get localized message
-		   expect(msgT.getText()).toEqual(res);
+			//browser.pause();
+			expect(msgT.getText()).toEqual(res);
 		});
 	});
 });

@@ -273,10 +273,6 @@ var App;
                     this.msg = this.$filter('i18n')('requiredFields');
                     return;
                 }
-                if (this.pw === 'wrong') {
-                    this.msg = this.$filter('i18n')('invalidCredentials');
-                    return;
-                }
                 this.BackendAPI.doPOST('jwt-auth', '{"userName":"' + this.email + '", "password":"' + this.pw + '"}')
                     .then(function (data) {
                     if (_this.authService.setUserData(data)) {

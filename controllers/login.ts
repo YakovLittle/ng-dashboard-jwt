@@ -21,11 +21,6 @@ module App.Controllers {
                 this.msg = this.$filter('i18n')('requiredFields');
                 return; 
             }
-            //NOTE: STUB -> Wrong password
-            if (this.pw === 'wrong') {
-                this.msg = this.$filter('i18n')('invalidCredentials');
-                return;
-            }
             //Call Authentication API
             this.BackendAPI.doPOST('jwt-auth', '{"userName":"' + this.email + '", "password":"' + this.pw + '"}')
             .then((data) => {//Authorization
