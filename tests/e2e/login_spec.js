@@ -17,13 +17,13 @@ describe('Login page', function() {
   		return "var filter = angular.element('*[ng-app]').injector().get('$filter'); return filter('i18n')('" + key +"');"
   	}
 
-  	var switchDebugMode = function() {//Switch from <backend-host> to localhost
-  		browser.executeScript("angular.element('*[ng-app]').injector().get('BackendAPI').switchDebugMode();");
+  	var switchDebugMode = function(mode) {//Switch from <backend-host> to localhost
+  		browser.executeScript("angular.element('*[ng-app]').injector().get('BackendAPI').switchDebugMode("+ mode +");");
   	}
 
 	beforeEach(function() {
-		browser.get('#/login');
 		browser.addMockModule('httpBackendMock', mockModule.httpBackendMock);
+		browser.get('#/login');
 		//checkAlert();
 		browser.executeScript("window.performance.mark('start');");
 	});
@@ -37,7 +37,7 @@ describe('Login page', function() {
 	});
 
 	it('should show Validation error', function() {
-		emailT.sendKeys("wrong@");
+		emailT.sendKeys("wrong@");		
 
 		loginB.click();
 
@@ -51,6 +51,8 @@ describe('Login page', function() {
 		emailT.sendKeys("test@email");
 		pwT.sendKeys("wrong");
 
+		switchDebugMode(1);//debug mode: ON
+
 		loginB.click();
 
 		browser.executeScript(getLocaleMsg('invalidCredentials'))
@@ -63,8 +65,7 @@ describe('Login page', function() {
 		emailT.sendKeys("test@email");
 		pwT.sendKeys("ok");
 
-		//Switch Debug Mode
-		switchDebugMode();
+		switchDebugMode(0);//debug mode: OFF
 
 		loginB.click();
 
@@ -77,6 +78,8 @@ describe('Login page', function() {
 	it('should open Home page', function() {
 		emailT.sendKeys("test@email");
 		pwT.sendKeys("ok");
+
+		switchDebugMode(1);//debug mode: ON
 
 		loginB.click();
 

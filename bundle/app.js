@@ -64,8 +64,8 @@ var App;
                 this.sessionService.set('referer-state', { 'name': referer });
                 this.$state.go(page, {}, { reload: true });
             };
-            BackendAPI.prototype.switchDebugMode = function () {
-                this.apiDBG = (this.apiDBG ? 0 : 1);
+            BackendAPI.prototype.switchDebugMode = function (mode) {
+                this.apiDBG = mode;
             };
             BackendAPI.prototype.getAPIurl = function (api, args) {
                 if (args === void 0) { args = ''; }

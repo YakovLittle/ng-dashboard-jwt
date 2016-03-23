@@ -4,7 +4,7 @@ exports.httpBackendMock = function() {
     document.getElementsByTagName('head')[0].appendChild(mock);
 
     angular.module('httpBackendMock', ['SPA', 'ngMockE2E'])
-    
+
     .run(function($httpBackend) {
         console.log('HTTP backend mock');
         //Authentication API
@@ -15,7 +15,7 @@ exports.httpBackendMock = function() {
             }
             return [200, angular.toJson(res), {}];
         });
-        $httpBackend.whenPOST(/\/auth/).passThrough();
+        $httpBackend.whenPOST(/\/dataload\/login/).passThrough();
 
         //GET for ALL
         $httpBackend.whenGET(/.*/).passThrough();

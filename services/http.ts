@@ -75,8 +75,8 @@ module App.Services {
         }
 
         //Switch Debug Mode
-        switchDebugMode(){
-            this.apiDBG = (this.apiDBG ? 0 : 1);
+        switchDebugMode(mode: number){
+            this.apiDBG = mode;
         }
 
         //Get API URL by Name
